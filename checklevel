@@ -1,0 +1,19 @@
+#!/bin/sh
+if [ "$#" -ne 1 ]; then
+    echo "Usage: checklevel ANSWER" >&2
+    exit 2
+fi
+number=$(printf '%s' "$USER" | sed 's/[^0-9]//g')
+answer_file="/var/lib/system-logs/answers/level$number"
+if [ ! -r "$answer_file" ]; then
+    echo "Submit this answer to the exercise grader."
+    exit 3
+fi
+expected=$(sed -n '1p' "$answer_file")
+if [ "$1" = "$expected" ]; then
+    echo "Correct."
+    exit 0
+fi
+echo "Incorrect."
+exit 1
+

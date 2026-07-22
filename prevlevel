@@ -1,0 +1,8 @@
+#!/bin/sh
+number=$(printf '%s' "$USER" | sed 's/[^0-9]//g')
+if [ -z "$number" ] || [ "$number" -le 1 ]; then
+    echo "You are already at the lowest level."
+    exit 1
+fi
+exec su - "level$((number - 1))"
+
