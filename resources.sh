@@ -162,7 +162,7 @@ write_os_release() {
 write_readme() {
     instructions=$1
     {
-        echo "* Collection date: $currentDate"
+        echo "* Exercise code: $EXERCISE_CODE"
         echo "* Learner        : $USER_ID"
         echo "************************************************************************"
         echo "* Case instructions"

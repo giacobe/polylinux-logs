@@ -48,7 +48,7 @@ build_standard_level() (
     final_home="$HOME_ROOT/$levelToBuild"
     if [ "${LEGACY_DIRECT:-0}" -eq 1 ]; then
         LEVEL_HOME="$final_home"
-        readMeLocation="$levelToBuild/.README.building"
+        readMeLocation="$final_home/.README.building"
         rm -f "$final_home/.README.building"
         export readMeLocation
     else
@@ -151,7 +151,10 @@ build_standard_levels() (
 
 start_standard_levels() {
     printf 'Preparing 10 %s levels using theme: %s\n' "$LAB_TITLE" "$(theme_field title)"
-    build_standard_levels &
+    # The learner shell replaces the installer as soon as Level 1 is ready.
+    # Ignore HUP and detach stdin so the remaining parallel workers survive
+    # that handoff and can publish their ready/failed markers.
+    (trap '' HUP; build_standard_levels) < /dev/null &
     SUPERVISOR_PID=$!
     if [ "$NO_LOGIN" -eq 1 ] || [ -n "${CASE_ROOT:-}" ]; then
         wait "$SUPERVISOR_PID" || poly_die "one or more levels failed; see $BUILD_LOG"
