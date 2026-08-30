@@ -85,5 +85,4 @@ fi
 
 answer="$operation|$package|$old|$new"
 write_readme "Inspect the package logs for the transaction in evidence/CASE.txt. Determine the operation, package, old version, and new version. Use none where no old or new version exists. Submit: operation|package|old-version|new-version"
-record_answer "$answer"
 finish_level

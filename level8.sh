@@ -73,5 +73,4 @@ printf '{"timestamp":"%s","level":"error","request_id":"%s","error_code":"%s","m
 
 answer="$client|$request|$status|$error"
 write_readme "Find the POST request for TARGET_PATH in the Nginx access log, then correlate its request_id with the JSON Lines application log. Submit: client-ip|request-id|http-status|error-code"
-record_answer "$answer"
 finish_level

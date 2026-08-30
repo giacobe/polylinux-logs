@@ -68,6 +68,5 @@ kernel_log="$CASE_DIR/hosts/$host/collected/kernel.log"
 
 answer="$subject|$incident|$consequence"
 write_readme "Inspect the kernel capture at EVENT_TIME from evidence/CASE.txt. Canonical codes use lowercase words separated by hyphens. Submit: subject|incident-code|consequence-code"
-record_answer "$answer"
 finish_level
 

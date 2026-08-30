@@ -1,36 +1,45 @@
 #!/bin/sh
 set -eu
-
 cd "$(dirname "$0")"
-INSTALL_ROOT=$(pwd)
-export INSTALL_ROOT
+. ./polylinux-common.sh
 
-test_root=$(mktemp -d "${TMPDIR:-/tmp}/polylinux-system-logs.XXXXXX")
-trap 'rm -rf "$test_root"' EXIT HUP INT TERM
-
-USER_ID=${USER_ID:-student@example.edu}
-currentDate=${CURRENT_DATE:-2026-07-21}
-SYSTEM_PASSWORD=${SYSTEM_PASSWORD:-exercisePassword}
-LEVEL_PASSWORD_ROOT=${LEVEL_PASSWORD_ROOT:-levelPassword}
-ANSWER_DIR="$test_root/answers"
-CASE_ROOT="$test_root/cases"
-SKIP_OWNERSHIP=1
-export USER_ID currentDate SYSTEM_PASSWORD LEVEL_PASSWORD_ROOT ANSWER_DIR CASE_ROOT SKIP_OWNERSHIP
-mkdir -p "$test_root/home" "$ANSWER_DIR" "$CASE_ROOT"
-
+LAB_ID=${LAB_ID:-system-logs}
+USER_ID=$(normalize_email '  Student@Example.EDU  ')
+currentDate=2026-08-30
+SYSTEM_PASSWORD='systemPassword'
+levelPassword='levelPassword1'
 levelnumber=1
-while [ "$levelnumber" -le 10 ]; do
-    levelToBuild="level$levelnumber"
-    echo "generate $levelToBuild"
-    LEVEL_HOME="$test_root/home/$levelToBuild"
-    levelPassword="${LEVEL_PASSWORD_ROOT}${levelnumber}"
-    level_HASH=$(printf '%s%s%s%s' "$USER_ID" "$currentDate" \
-        "$SYSTEM_PASSWORD" "$levelPassword" | sha256sum | awk '{print $1}')
-    export levelnumber levelToBuild LEVEL_HOME levelPassword level_HASH
-    mkdir -p "$LEVEL_HOME"
-    sh "$INSTALL_ROOT/$levelToBuild.sh"
-    levelnumber=$((levelnumber + 1))
+export LAB_ID USER_ID currentDate SYSTEM_PASSWORD levelPassword levelnumber
+
+[ "$USER_ID" = 'student@example.edu' ]
+[ "$(exercise_code_from_date "$currentDate")" = '13527DE' ]
+seed_a=$(level_seed_v1)
+seed_b=$(level_seed_v1)
+[ "$seed_a" = "$seed_b" ]
+
+seen='|'
+index=0
+while [ "$index" -lt 16 ]; do
+    THEME_INDEX=$index
+    export THEME_INDEX
+    id=$(theme_field id)
+    case "$seen" in *"|$id|"*) echo "duplicate theme id: $id" >&2; exit 1 ;; esac
+    seen="$seen$id|"
+    for field in title org place system project asset event status service host file person; do
+        [ -n "$(theme_field "$field")" ]
+    done
+    index=$((index + 1))
 done
 
-echo "verify generated cases"
-CASE_ROOT="$CASE_ROOT" ANSWER_DIR="$ANSWER_DIR" sh "$INSTALL_ROOT/verify.sh"
+for level in 1 2 3 4 5 6 7 8 9 10; do
+    sh -n "./level$level.sh"
+done
+sh -n ./install.sh ./resources.sh ./polylinux-common.sh ./polylinux-parallel-runtime.sh
+
+if grep -R -n -E 'record_answer|ANSWER_DIR|/answers|checklevel' . \
+    --exclude-dir=.git --exclude-dir=provenance --exclude=README.md --exclude=LEVELS.md \
+    --exclude=participant-guide.md --exclude=test.sh --exclude=verify.sh; then
+    echo 'client-side answer-key reference remains' >&2
+    exit 1
+fi
+echo 'Contract, theme catalog, and shell syntax checks passed.'

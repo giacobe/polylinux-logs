@@ -50,6 +50,5 @@ last_file="$CASE_DIR/hosts/$host/collected/last-Fai.txt"
 
 answer="$target_user|$target_ip|$minutes"
 write_readme "Use evidence/CASE.txt to locate the successful session in the captured last output. Report its username, source address, and duration column in minutes. Do not use lastb, which contains failed logins. Submit: username|source-ip|minutes"
-record_answer "$answer"
 finish_level
 

@@ -77,6 +77,5 @@ printf 'RUN_ID=RUN-retry-ok\nCOMMAND=%s\nUSER=%s\nMESSAGE=completed\nEXIT_STATUS
 
 answer="$target_user|$target_command|$target_exit"
 write_readme "Investigate the scheduled run identified in evidence/CASE.txt. Correlate the distro-appropriate cron log with the matching file under var/log/jobs. Submit: username|command-name|exit-status"
-record_answer "$answer"
 finish_level
 

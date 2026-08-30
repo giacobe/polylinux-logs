@@ -39,6 +39,5 @@ start="$(iso_time timestamp 0)"
 
 answer="$boot_id|$start|$previous"
 write_readme "Inspect the captured boot history for the host named in evidence/CASE.txt. Report the current boot ID, its ISO start time without the UTC offset, and the number of previous boots represented. Submit: boot-id|YYYY-MM-DDTHH:MM:SS|previous-count"
-record_answer "$answer"
 finish_level
 

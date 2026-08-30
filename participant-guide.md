@@ -1,0 +1,16 @@
+---
+title: "System Information and Logs"
+short_title: "System Information and Logs"
+panel_title: "Learning Path"
+form_url: ""
+
+---
+
+# System Information and Logs
+
+This browser-based lab starts a private, temporary Linux virtual machine. Enter your email address when prompted. The VM displays an exercise code and prepares the levels locally.
+
+Use
+extlevel and prevlevel to move freely between levels. A level that is still preparing displays a message asking you to return later. Submit requested answers through the external answer form; the VM does not store an answer key or grade submissions.
+
+Except for PolyBandit, one of sixteen fictional themes is selected deterministically for the complete attempt. Restarting with the same email address on the same date recreates the same themed fixtures.

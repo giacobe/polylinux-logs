@@ -64,6 +64,5 @@ target_cause=$(service_field "$target" cause)
 
 answer="$target_unit|$target_cause|$target_time"
 write_readme "Read evidence/CASE.txt and the captured unit logs. Identify the unresolved service, its explicit CAUSE_CODE, and the ISO failure time without an offset. Submit: unit-name|cause-code|YYYY-MM-DDTHH:MM:SS"
-record_answer "$answer"
 finish_level
 

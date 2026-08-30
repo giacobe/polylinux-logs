@@ -171,11 +171,6 @@ write_readme() {
     } > "$LEVEL_HOME/README.txt"
 }
 
-record_answer() {
-    printf '%s\n' "$1" > "$ANSWER_DIR/$levelToBuild"
-    chmod 600 "$ANSWER_DIR/$levelToBuild"
-}
-
 fresh_case() {
     case "$levelToBuild" in
         level[1-9]|level10) ;;

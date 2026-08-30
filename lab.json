@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "lab_id": "system-logs",
+  "lab_number": 10,
+  "title": "System Information and Logs",
+  "status": "published",
+  "lab_version": "1.0.0",
+  "seed_contract_version": "seed-v1",
+  "theme_catalog_version": "themes-v1",
+  "level_count": 10,
+  "level_script_pattern": "level{n}.sh",
+  "user_pattern": "level{n}",
+  "participant_guide": "participant-guide.md",
+  "buildroot_configuration": "basic-compression",
+  "kernel_filename": "packaged.bzImage",
+  "rootfs_filename": "packaged.rootfs.cpio.gz",
+  "max_parallel": 10,
+  "client_answer_store": false,
+  "form_url": ""
+}

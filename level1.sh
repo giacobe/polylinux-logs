@@ -55,5 +55,4 @@ printf 'This is a stale pre-rebuild snapshot.\n' > "$CASE_DIR/inventory/$target_
 distro=$(profile_field "$target_profile" label)
 answer="$target_host|$distro|$target_kernel|$target_arch"
 write_readme "The Buildroot VM is a collection console. Inspect evidence/ASSIGNMENT.txt, locate the assigned remote host, and use its current os-release, uname.txt, and inventory.conf files. Submit: hostname|distribution-version|kernel|architecture. Use the hyphenated distribution label implied by PRETTY_NAME, as shown in this example: host|Debian-12.10|6.1.0-35-amd64|x86_64"
-record_answer "$answer"
 finish_level

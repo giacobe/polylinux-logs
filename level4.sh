@@ -52,6 +52,5 @@ printf '%s %s sudo: localadmin : authentication failure ; tty=pts/0 ; user=root\
 
 answer="$target_user|$target_ip|$count"
 write_readme "Inspect the authentication log identified by evidence/CASE.txt. For TARGET_SOURCE, find the invalid username and count only Failed password records. Submit: username|source-ip|count"
-record_answer "$answer"
 finish_level
 

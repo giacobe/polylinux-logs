@@ -12,7 +12,6 @@ stated.
 Run as root inside the exercise image:
 
 ```sh
-chmod +x install.sh level*.sh verify.sh nextlevel prevlevel checklevel
 ./install.sh
 ```
 
@@ -26,11 +25,8 @@ SYSTEM_PASSWORD=exercisePassword ./install.sh --non-interactive --no-login
 
 The installer creates users `level1` through `level10`, stores each level's
 evidence under `/srv/log-collector/cases/levelN`, and places a convenient
-`evidence` symlink in the corresponding home directory. Expected answers are
-root-only files under `/var/lib/system-logs/answers`.
 
 Developers can generate fixtures without creating system accounts by setting
-`CASE_ROOT`, `ANSWER_DIR`, `LEVEL_HOME`, and `SKIP_OWNERSHIP=1` before invoking
 an individual level script with the normal exported seed variables.
 
 Run the complete unprivileged generator and solver test with:
@@ -81,3 +77,9 @@ scripts/03-package-payload.sh \
 
 Replace `<timestamp>` with the stage-2 artifact directory. Review the manifest
 and boot-test the exact generated image pair in v86 before publishing.
+
+## Standard runtime contract
+
+The current release uses the reversible PolyBandit exercise code, the versioned `seed-v1` deterministic seed, ten concurrent level generators, staged `README.txt` readiness, unrestricted `nextlevel`/`prevlevel` navigation, and no client-side answer store or checker. See `lab.json` for the authoritative level count, theme policy, Buildroot configuration, and browser artifact names.
+
+Do not rebuild the assigned Buildroot baseline merely to package this lab. Package the repository payload into the configuration named by `buildroot_configuration`, preserve the baseline kernel, and publish the resulting `packaged.bzImage` and `packaged.rootfs.cpio.gz`.

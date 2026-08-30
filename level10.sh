@@ -103,5 +103,4 @@ rm "$CASE_DIR/aggregate/timeline.log.1"
 
 answer="$root_event|$service|$failure_time"
 write_readme "Reconstruct the incident named in evidence/CASE.txt across authentication, package/change, service, web, and aggregate logs. Symptoms are not the root event. Submit: root-event-code|service|YYYY-MM-DDTHH:MM:SSZ"
-record_answer "$answer"
 finish_level
