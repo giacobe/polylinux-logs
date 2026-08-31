@@ -543,5 +543,5 @@ You may return to any earlier case:
 prevlevel
 ```
 
-Submit each level's answer through the code-submission panel beside the
+Submit each level's answer through the exercise grading form beside the
 terminal. The VM does not grade answers or provide correctness feedback.

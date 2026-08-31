@@ -2,10 +2,11 @@
 PS1='\W$ '
 cd "$HOME" || exit 1
 clear
-echo "************************************************************************"
-echo "* PolyLinux System Information and Logs                                *"
-echo "* This Buildroot VM is a collection console. Evidence describes       *"
-echo "* remote Linux hosts. Read README.txt to begin.                        *"
-echo "* Submit one answer per level. Move with nextlevel and prevlevel.      *"
-echo "************************************************************************"
+box_line() { printf '* %-36.36s *\n' "$1"; }
+echo '****************************************'
+box_line 'PolyLinux: System Info and Logs'
+box_line 'Read README.txt to begin.'
+box_line 'Use the exercise grading form.'
+box_line 'Use nextlevel and prevlevel.'
+echo '****************************************'
 cat README.txt

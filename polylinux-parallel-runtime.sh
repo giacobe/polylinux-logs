@@ -78,10 +78,10 @@ build_standard_level() (
                 echo "Participant: $USER_ID"
                 echo "Exercise code: $EXERCISE_CODE"
                 echo "Theme: $(theme_field title)"
-                echo
+                echo '__POLYLINUX_DIVIDER__'
                 # Some predecessor generators wrote their own metadata. The
                 # shared runtime is authoritative, so suppress duplicate rows.
-                sed '/^Level[[:space:]]*:/d;/^PolyLinux[[:space:]]*:/d;/^Participant[[:space:]]*:/d;/^Exercise code[[:space:]]*:/d;/^Theme[[:space:]]*:/d' "$generated_readme"
+                sed '/^[*[:space:]]*Level[[:space:]]*:/d;/^[*[:space:]]*PolyLinux[[:space:]]*:/d;/^[*[:space:]]*Participant[[:space:]]*:/d;/^[*[:space:]]*Learner[[:space:]]*:/d;/^[*[:space:]]*User[[:space:]]*:/d;/^[*[:space:]]*Exercise code[[:space:]]*:/d;/^[*[:space:]]*Theme[[:space:]]*:/d;/^[*[:space:]]*Generated for[[:space:]]*:/d' "$generated_readme"
             } > "$raw_readme"
             rm -f "$generated_readme"
         else
@@ -91,7 +91,7 @@ build_standard_level() (
                 echo "Participant: $USER_ID"
                 echo "Exercise code: $EXERCISE_CODE"
                 echo "Theme: $(theme_field title)"
-                echo
+                echo '__POLYLINUX_DIVIDER__'
                 echo 'This level is ready.'
             } > "$raw_readme"
         fi

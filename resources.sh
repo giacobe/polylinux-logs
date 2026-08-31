@@ -162,11 +162,7 @@ write_os_release() {
 write_readme() {
     instructions=$1
     {
-        echo "* Exercise code: $EXERCISE_CODE"
-        echo "* Learner        : $USER_ID"
-        echo "************************************************************************"
-        echo "* Case instructions"
-        echo "************************************************************************"
+        echo "Case instructions"
         printf '%s\n' "$instructions"
     } > "$LEVEL_HOME/README.txt"
 }

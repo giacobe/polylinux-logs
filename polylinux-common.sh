@@ -132,7 +132,7 @@ prepare_theme_dictionaries() {
     done
 }
 
-# Render a complete 80-column terminal box. Legacy level generators may still
+# Render a complete 40-column terminal box. Legacy level generators may still
 # emit partial star borders; normalize those lines here so presentation is
 # consistent without coupling the curriculum scripts to terminal formatting.
 render_box_file() {
@@ -140,27 +140,28 @@ render_box_file() {
     output=$2
     awk '
         BEGIN {
-            width = 76
-            border = "********************************************************************************"
+            width = 36
+            border = "****************************************"
             print border
         }
         function boxed(text,    cut, i) {
             if (text == "") {
-                printf "* %-76s *\n", ""
+                printf "* %-36s *\n", ""
                 return
             }
             while (length(text) > width) {
                 cut = width
                 for (i = width; i > 1; i--)
                     if (substr(text, i, 1) == " ") { cut = i - 1; break }
-                printf "* %-76s *\n", substr(text, 1, cut)
+                printf "* %-36s *\n", substr(text, 1, cut)
                 text = substr(text, cut + 1)
                 sub(/^[[:space:]]+/, "", text)
             }
-            printf "* %-76s *\n", text
+            printf "* %-36s *\n", text
         }
         {
             line = $0
+            if (line == "__POLYLINUX_DIVIDER__") { print border; next }
             if (line ~ /^\*+[[:space:]]*$/) next
             sub(/^\*[[:space:]]?/, "", line)
             sub(/[[:space:]]?\*$/, "", line)
