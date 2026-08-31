@@ -105,25 +105,96 @@ theme_variant() {
     printf '%s_%02d\n' "$(theme_field "$field")" "$ordinal"
 }
 
+# Materialize the legacy 16-by-16 dictionary shape from the selected theme.
+# This keeps the original navigation mechanisms while ensuring every filename
+# and distractor belongs visibly to the attempt's theme.
+prepare_theme_dictionaries() {
+    destination=$1
+    case "$destination" in
+        /run/polylinux/*/theme-dictionaries|*/theme-dictionaries) ;;
+        *) poly_die "refusing unexpected theme dictionary path: $destination" ;;
+    esac
+    rm -rf "$destination"
+    mkdir -p "$destination"
+    for key in 0 1 2 3 4 5 6 7 8 9 a b c d e f; do
+        case "$key" in
+            0|b) field=org ;; 1|c) field=place ;; 2) field=system ;;
+            3|d) field=project ;; 4|e) field=asset ;; 5|f) field=event ;;
+            6) field=status ;; 7) field=service ;; 8) field=host ;;
+            9) field=file ;; a) field=person ;;
+        esac
+        base=$(theme_field "$field")
+        ordinal=0
+        while [ "$ordinal" -lt 16 ]; do
+            printf '%s_%s_%02d\n' "$base" "$key" "$ordinal"
+            ordinal=$((ordinal + 1))
+        done > "$destination/dict$key.txt"
+    done
+}
+
+# Render a complete 80-column terminal box. Legacy level generators may still
+# emit partial star borders; normalize those lines here so presentation is
+# consistent without coupling the curriculum scripts to terminal formatting.
+render_box_file() {
+    input=$1
+    output=$2
+    awk '
+        BEGIN {
+            width = 76
+            border = "********************************************************************************"
+            print border
+        }
+        function boxed(text,    cut, i) {
+            if (text == "") {
+                printf "* %-76s *\n", ""
+                return
+            }
+            while (length(text) > width) {
+                cut = width
+                for (i = width; i > 1; i--)
+                    if (substr(text, i, 1) == " ") { cut = i - 1; break }
+                printf "* %-76s *\n", substr(text, 1, cut)
+                text = substr(text, cut + 1)
+                sub(/^[[:space:]]+/, "", text)
+            }
+            printf "* %-76s *\n", text
+        }
+        {
+            line = $0
+            if (line ~ /^\*+[[:space:]]*$/) next
+            sub(/^\*[[:space:]]?/, "", line)
+            sub(/[[:space:]]?\*$/, "", line)
+            boxed(line)
+        }
+        END { print border }
+    ' "$input" > "$output"
+}
+
 write_pending_readme() {
     home=$1
     mkdir -p "$home"
-    cat > "$home/README.txt" <<'EOF'
+    raw="$home/.README.pending.$$"
+    cat > "$raw" <<'EOF'
 This level has not completed building yet.
 
 You may continue to another level or return here shortly.
 EOF
+    render_box_file "$raw" "$home/README.txt"
+    rm -f "$raw"
 }
 
 write_failed_readme() {
     home=$1
     level=$2
     tmp="$home/.README.txt.failed.$$"
+    raw="$home/.README.failed.raw.$$"
     {
         echo 'This level could not be prepared.'
         echo
         echo 'Restart this lab to try again. If the problem continues, report the'
         printf 'lab name and level number (%s) to your instructor.\n' "$level"
-    } > "$tmp"
+    } > "$raw"
+    render_box_file "$raw" "$tmp"
+    rm -f "$raw"
     mv "$tmp" "$home/README.txt"
 }

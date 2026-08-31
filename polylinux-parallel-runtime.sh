@@ -67,43 +67,36 @@ build_standard_level() (
         else
             final_readme="$LEVEL_HOME/README.txt"
         fi
+        raw_readme="$HOME_ROOT/.README-raw-$LAB_ID-$levelToBuild.$$"
         saved_readme="$HOME_ROOT/.README-$LAB_ID-$levelToBuild.$$"
         if [ -f "$final_readme" ]; then
             generated_readme="$HOME_ROOT/.generated-README-$LAB_ID-$levelToBuild.$$"
             mv "$final_readme" "$generated_readme"
             {
+                echo "Level: $levelToBuild"
                 echo "PolyLinux: $LAB_TITLE"
                 echo "Participant: $USER_ID"
                 echo "Exercise code: $EXERCISE_CODE"
                 echo "Theme: $(theme_field title)"
                 echo
-                cat "$generated_readme"
-            } > "$saved_readme"
+                # Some predecessor generators wrote their own metadata. The
+                # shared runtime is authoritative, so suppress duplicate rows.
+                sed '/^Level[[:space:]]*:/d;/^PolyLinux[[:space:]]*:/d;/^Participant[[:space:]]*:/d;/^Exercise code[[:space:]]*:/d;/^Theme[[:space:]]*:/d' "$generated_readme"
+            } > "$raw_readme"
             rm -f "$generated_readme"
         else
             {
+                echo "Level: $levelToBuild"
                 echo "PolyLinux: $LAB_TITLE"
                 echo "Participant: $USER_ID"
                 echo "Exercise code: $EXERCISE_CODE"
                 echo "Theme: $(theme_field title)"
                 echo
                 echo 'This level is ready.'
-            } > "$saved_readme"
+            } > "$raw_readme"
         fi
-        {
-            echo "theme_id=$(theme_field id)"
-            echo "organization=$(theme_field org)"
-            echo "location=$(theme_field place)"
-            echo "system=$(theme_field system)"
-            echo "project=$(theme_field project)"
-            echo "asset=$(theme_field asset)"
-            echo "event=$(theme_field event)"
-            echo "status=$(theme_field status)"
-            echo "service=$(theme_field service)"
-            echo "hostname=$(theme_field host)"
-            echo "filename=$(theme_field file)"
-            echo "participant=$(theme_field person)"
-        } > "$LEVEL_HOME/theme-context.txt"
+        render_box_file "$raw_readme" "$saved_readme"
+        rm -f "$raw_readme"
         if [ "${LEGACY_DIRECT:-0}" -ne 1 ]; then cp -a "$LEVEL_HOME/." "$final_home/"; fi
         mv "$saved_readme" "$final_home/README.txt"
         if [ "${LEGACY_DIRECT:-0}" -ne 1 ]; then rm -rf "$LEVEL_HOME"; fi
