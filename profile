@@ -1,4 +1,5 @@
 #!/bin/sh
+. /etc/profile.d/polylinux-colors.sh
 PS1='\W$ '
 cd "$HOME" || exit 1
 clear

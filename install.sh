@@ -48,8 +48,10 @@ export THEME_OFFSET THEME_STEP
 
 for cmd in adduser awk base64 basename cat chmod chown cp cut date dirname find grep gzip head id ln mkdir mv passwd printf rm sed sha256sum sleep sort su tail tr uniq wc xxd; do command_required "$cmd"; done
 
-mkdir -p /home /srv/log-collector/cases
+mkdir -p /home /srv/log-collector/cases /etc/profile.d
 
+cp "$INSTALL_ROOT/polylinux-colors.sh" /etc/profile.d/polylinux-colors.sh
+chmod 644 /etc/profile.d/polylinux-colors.sh
 cp "$INSTALL_ROOT/profile" /etc/profile
 for helper in nextlevel prevlevel; do
     cp "$INSTALL_ROOT/$helper" "/usr/bin/$helper"
